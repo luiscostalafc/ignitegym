@@ -1,11 +1,11 @@
 import { StatusBar } from "react-native";
 import { GluestackUIProvider, Text, Box } from "@gluestack-ui/themed";
+import { config } from "@gluestack-ui/config";
 import {
   useFonts,
   Roboto_400Regular,
   Roboto_700Bold,
 } from "@expo-google-fonts/roboto";
-import { config } from "@gluestack-ui/config";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
