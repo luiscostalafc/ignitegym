@@ -1,4 +1,4 @@
-import { Spinner, Center } from "@gluestack-ui/themed";
+import { Spinner, Center } from "native-base";
 
 export function Loading() {
   return (

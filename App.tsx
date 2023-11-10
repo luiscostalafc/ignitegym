@@ -1,12 +1,15 @@
 import { StatusBar } from "react-native";
-import { GluestackUIProvider, Text, Box } from "@gluestack-ui/themed";
+import { NativeBaseProvider } from "native-base";
 import {
   useFonts,
   Roboto_400Regular,
   Roboto_700Bold,
 } from "@expo-google-fonts/roboto";
+
 import { Loading } from "@components/Loading";
-import { config } from "@config/gluestack-ui.config";
+import { SignIn } from "@screens/SignIn";
+
+import { THEME } from "@theme/index";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -15,20 +18,13 @@ export default function App() {
   });
 
   return (
-    <GluestackUIProvider config={config}>
-      <Box
-        flex={1}
-        alignItems="center"
-        justifyContent="center"
-        backgroundColor="$backgroundDark900"
-      >
-        <StatusBar
-          barStyle="light-content"
-          backgroundColor="transparent"
-          translucent
-        />
-        {fontsLoaded ? <Text color="$white">Hello World!</Text> : <Loading />}
-      </Box>
-    </GluestackUIProvider>
+    <NativeBaseProvider theme={THEME}>
+      <StatusBar
+        barStyle="light-content"
+        backgroundColor="transparent"
+        translucent
+      />
+      {fontsLoaded ? <SignIn /> : <Loading />}
+    </NativeBaseProvider>
   );
 }
