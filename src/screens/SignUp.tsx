@@ -1,9 +1,10 @@
 import { VStack, Image, Center, Text, Heading, ScrollView } from "native-base";
 
-import backgroundImg from "@assets/background.png";
-import LogoSvg from "@assets/logo.svg";
 import { Input } from "@components/Input";
 import { Button } from "@components/Button";
+
+import backgroundImg from "@assets/background.png";
+import LogoSvg from "@assets/logo.svg";
 
 export function SignUp() {
   return (
