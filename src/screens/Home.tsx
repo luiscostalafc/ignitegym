@@ -31,8 +31,7 @@ export function Home() {
           <Group
             name={item}
             isActive={
-              String(groupSelected).toLocaleUpperCase() ===
-              String(item).toLocaleUpperCase()
+              groupSelected.toLocaleUpperCase() === item.toLocaleUpperCase()
             }
             onPress={() => setGroupSelected(item)}
           />
