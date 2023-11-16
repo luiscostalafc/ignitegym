@@ -18,7 +18,7 @@ export function Home() {
     "Remada unilateral",
     "Levantamento terra",
   ]);
-  const [groupSelected, setGroupSelected] = useState("costa");
+  const [groupSelected, setGroupSelected] = useState("Costas");
 
   return (
     <VStack flex={1}>
