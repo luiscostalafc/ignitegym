@@ -10,6 +10,7 @@ import { History } from "@screens/History";
 import { Profile } from "@screens/Profile";
 import { Exercise } from "@screens/Exercise";
 
+import { ExerciseRouteParamsProps } from "src/types/Home";
 import HomeSVG from "@assets/home.svg";
 import HistorySVG from "@assets/history.svg";
 import ProfileSVG from "@assets/profile.svg";
@@ -20,7 +21,7 @@ type AppRoutesProps = {
   home: undefined;
   profile: undefined;
   history: undefined;
-  exercice: undefined;
+  exercice: ExerciseRouteParamsProps;
 };
 
 export type AppRoutesNavigationProps = BottomTabNavigationProp<AppRoutesProps>;

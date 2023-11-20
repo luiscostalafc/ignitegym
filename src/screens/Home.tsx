@@ -1,5 +1,8 @@
 import { useState } from "react";
 import { VStack, FlatList, HStack, Heading, Text } from "native-base";
+import { useNavigation } from "@react-navigation/native";
+
+import { AppRoutesNavigationProps } from "@routes/app.routes";
 
 import { HomeHeader } from "@components/HomeHeader";
 import { Group } from "@components/Group";
@@ -19,6 +22,18 @@ export function Home() {
     "Levantamento terra",
   ]);
   const [groupSelected, setGroupSelected] = useState("Costas");
+  const [series, setSeries] = useState(3);
+  const [repetitions, setRepetitions] = useState(12);
+  const navigation = useNavigation<AppRoutesNavigationProps>();
+
+  function handleOpenExerciseDetails(item: string) {
+    navigation.navigate("exercice", {
+      exercise: item,
+      group: groupSelected,
+      series,
+      repetitions,
+    });
+  }
 
   return (
     <VStack flex={1}>
@@ -60,7 +75,12 @@ export function Home() {
           data={exercises}
           keyExtractor={(item) => item}
           renderItem={({ item }) => (
-            <ExerciseCard name={item} seriesValue={3} repetitionsValue={12} />
+            <ExerciseCard
+              name={item}
+              seriesValue={series}
+              repetitionsValue={repetitions}
+              onPress={() => handleOpenExerciseDetails(item)}
+            />
           )}
           showsVerticalScrollIndicator={false}
           _contentContainerStyle={{
