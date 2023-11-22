@@ -1,6 +1,10 @@
 import { VStack, Image, Center, Text, Heading, ScrollView } from "native-base";
 import { useNavigation } from "@react-navigation/native";
 import { useForm, Controller } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+
+import { signUpFormSchema } from "src/validations/signUpFormSchema";
+import { FormDataProps } from "src/types/SignUp";
 
 import { Input } from "@components/Input";
 import { Button } from "@components/Button";
@@ -8,28 +12,21 @@ import { Button } from "@components/Button";
 import backgroundImg from "@assets/background.png";
 import LogoSvg from "@assets/logo.svg";
 
-type FormDataProps = {
-  name: string;
-  email: string;
-  password: string;
-  password_confirm: string;
-};
-
 export function SignUp() {
   const navigtion = useNavigation();
   const {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormDataProps>();
+  } = useForm<FormDataProps>({
+    resolver: yupResolver<any>(signUpFormSchema),
+  });
 
   const handleGoBack = () => {
     navigtion.goBack();
   };
 
-  const handleSignUp = (data: FormDataProps) => {
-    console.log(data);
-  };
+  const handleSignUp = (data: FormDataProps) => {};
 
   return (
     <ScrollView
