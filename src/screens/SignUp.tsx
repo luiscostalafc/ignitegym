@@ -8,15 +8,26 @@ import { Button } from "@components/Button";
 import backgroundImg from "@assets/background.png";
 import LogoSvg from "@assets/logo.svg";
 
+type FormDataProps = {
+  name: string;
+  email: string;
+  password: string;
+  password_confirm: string;
+};
+
 export function SignUp() {
   const navigtion = useNavigation();
-  const { control, handleSubmit } = useForm();
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormDataProps>();
 
   const handleGoBack = () => {
     navigtion.goBack();
   };
 
-  const handleSignUp = (data: any) => {
+  const handleSignUp = (data: FormDataProps) => {
     console.log(data);
   };
 
@@ -54,6 +65,7 @@ export function SignUp() {
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
+                errorMessage={errors.name?.message}
               />
             )}
             name="name"
@@ -69,6 +81,7 @@ export function SignUp() {
                 value={value}
                 keyboardType="email-address"
                 autoCapitalize="none"
+                errorMessage={errors.email?.message}
               />
             )}
             name="email"
@@ -83,6 +96,7 @@ export function SignUp() {
                 onChangeText={onChange}
                 value={value}
                 secureTextEntry
+                errorMessage={errors.password?.message}
               />
             )}
             name="password"
@@ -97,6 +111,9 @@ export function SignUp() {
                 onChangeText={onChange}
                 value={value}
                 secureTextEntry
+                onSubmitEditing={handleSubmit(handleSignUp)}
+                returnKeyType="send"
+                errorMessage={errors.password_confirm?.message}
               />
             )}
             name="password_confirm"
