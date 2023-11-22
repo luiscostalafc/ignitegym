@@ -24,7 +24,13 @@ export function History() {
         keyExtractor={(item) => item}
         renderItem={({ item }) => <HistoryCard />}
         renderSectionHeader={({ section }) => (
-          <Heading color="gray.200" fontSize="md" mt={10} mb={3}>
+          <Heading
+            color="gray.200"
+            fontSize="md"
+            fontFamily="heding"
+            mt={10}
+            mb={3}
+          >
             {section.title}
           </Heading>
         )}

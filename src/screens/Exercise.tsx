@@ -34,7 +34,12 @@ export function Exercise() {
           mt={4}
           mb={8}
         >
-          <Heading flexShrink={1} color="gray.100" fontSize="lg">
+          <Heading
+            flexShrink={1}
+            color="gray.100"
+            fontSize="lg"
+            fontFamily="heding"
+          >
             {exercise || ""}
           </Heading>
 
