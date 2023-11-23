@@ -16,7 +16,7 @@ export function HistoryCard() {
         <Heading
           color="white"
           fontSize="md"
-          fontFamily="heding"
+          fontFamily="heading"
           textTransform="capitalize"
           numberOfLines={1}
         >

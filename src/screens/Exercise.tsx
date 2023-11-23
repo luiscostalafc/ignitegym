@@ -38,7 +38,7 @@ export function Exercise() {
             flexShrink={1}
             color="gray.100"
             fontSize="lg"
-            fontFamily="heding"
+            fontFamily="heading"
           >
             {exercise || ""}
           </Heading>

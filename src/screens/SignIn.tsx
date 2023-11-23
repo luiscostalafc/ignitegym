@@ -38,7 +38,7 @@ export function SignIn() {
         </Center>
 
         <Center>
-          <Heading color="gray.100" fontSize="xl" fontFamily="heding" mb={6}>
+          <Heading color="gray.100" fontSize="xl" fontFamily="heading" mb={6}>
             Acesse sua conta
           </Heading>
           <Input

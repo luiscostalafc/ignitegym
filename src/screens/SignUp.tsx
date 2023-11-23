@@ -3,8 +3,8 @@ import { useNavigation } from "@react-navigation/native";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-import { signUpFormSchema } from "src/validations/signUpFormSchema";
-import { FormDataProps } from "src/types/SignUp";
+import { signUpFormSchema } from "../validations/signUpFormSchema";
+import { FormDataProps } from "../types/SignUp";
 
 import { Input } from "@components/Input";
 import { Button } from "@components/Button";

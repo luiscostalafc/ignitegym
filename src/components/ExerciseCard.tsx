@@ -37,7 +37,7 @@ export function ExerciseCard({
         />
 
         <VStack flex={1}>
-          <Heading fontSize="lg" fontFamily="heding" color="white">
+          <Heading fontSize="lg" fontFamily="heading" color="white">
             {name}
           </Heading>
           <Text fontSize="sm" color="gray.200" mt={1} numberOfLines={2}>
