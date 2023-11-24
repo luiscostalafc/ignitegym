@@ -1,5 +1,6 @@
 import { VStack, Image, Center, Text, Heading, ScrollView } from "native-base";
 import { useNavigation } from "@react-navigation/native";
+import { useForm, Controller } from "react-hook-form";
 
 import { AuthNavigatorRoutesProps } from "@routes/auth.routes";
 
@@ -9,11 +10,25 @@ import { Button } from "@components/Button";
 import backgroundImg from "@assets/background.png";
 import LogoSvg from "@assets/logo.svg";
 
+type FormDataProps = {
+  email: string;
+  password: string;
+};
+
 export function SignIn() {
   const navigtion = useNavigation<AuthNavigatorRoutesProps>();
+  const {
+    control,
+    formState: { errors },
+    handleSubmit,
+  } = useForm<FormDataProps>();
 
   const handleNewAccount = () => {
     navigtion.navigate("signUp");
+  };
+
+  const handleSignIn = ({ email, password }: FormDataProps) => {
+    console.log(email, password);
   };
 
   return (
@@ -41,14 +56,37 @@ export function SignIn() {
           <Heading color="gray.100" fontSize="xl" fontFamily="heading" mb={6}>
             Acesse sua conta
           </Heading>
-          <Input
-            placeholder="E-mail"
-            keyboardType="email-address"
-            autoCapitalize="none"
-          />
-          <Input placeholder="Senha" secureTextEntry />
 
-          <Button title="Acessar" />
+          <Controller
+            control={control}
+            render={({ field: { onChange } }) => (
+              <Input
+                placeholder="E-mail"
+                keyboardType="email-address"
+                autoCapitalize="none"
+                onChangeText={onChange}
+                errorMessage={errors.email?.message}
+              />
+            )}
+            name="email"
+            rules={{ required: 'Campo "E-mail" obrigatório' }}
+          />
+
+          <Controller
+            control={control}
+            render={({ field: { onChange } }) => (
+              <Input
+                placeholder="Senha"
+                secureTextEntry
+                onChangeText={onChange}
+                errorMessage={errors.password?.message}
+              />
+            )}
+            name="password"
+            rules={{ required: 'Campo "Senha" obrigatório' }}
+          />
+
+          <Button title="Acessar" onPress={handleSubmit(handleSignIn)} />
         </Center>
 
         <Center mt={24}>
