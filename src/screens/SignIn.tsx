@@ -1,14 +1,25 @@
-import { VStack, Image, Center, Text, Heading, ScrollView } from "native-base";
+import { useState } from "react";
+import {
+  VStack,
+  Image,
+  Center,
+  Text,
+  Heading,
+  ScrollView,
+  useToast,
+} from "native-base";
 import { useNavigation } from "@react-navigation/native";
 import { useForm, Controller } from "react-hook-form";
 
 import { AuthNavigatorRoutesProps } from "@routes/auth.routes";
+import { useAuth } from "@hooks/useAuth";
 
 import { Input } from "@components/Input";
 import { Button } from "@components/Button";
 
 import backgroundImg from "@assets/background.png";
 import LogoSvg from "@assets/logo.svg";
+import { AppError } from "@utils/AppError";
 
 type FormDataProps = {
   email: string;
@@ -16,19 +27,39 @@ type FormDataProps = {
 };
 
 export function SignIn() {
+  const [isLoading, setIsLoading] = useState(false);
   const navigtion = useNavigation<AuthNavigatorRoutesProps>();
   const {
     control,
     formState: { errors },
     handleSubmit,
   } = useForm<FormDataProps>();
+  const { signIn } = useAuth();
+  const toast = useToast();
 
   const handleNewAccount = () => {
     navigtion.navigate("signUp");
   };
 
-  const handleSignIn = ({ email, password }: FormDataProps) => {
-    console.log(email, password);
+  const handleSignIn = async ({ email, password }: FormDataProps) => {
+    try {
+      setIsLoading(true);
+      await signIn(email, password);
+    } catch (error) {
+      const isAppError = error instanceof AppError;
+
+      setIsLoading(false);
+
+      const title = isAppError
+        ? error.message
+        : "Não foi possível fazer o login. Tente novamente mais tarde.";
+
+      toast.show({
+        title,
+        placement: "top",
+        bgColor: "red.500",
+      });
+    }
   };
 
   return (
@@ -86,7 +117,11 @@ export function SignIn() {
             rules={{ required: 'Campo "Senha" obrigatório' }}
           />
 
-          <Button title="Acessar" onPress={handleSubmit(handleSignIn)} />
+          <Button
+            isLoading={isLoading}
+            title="Acessar"
+            onPress={handleSubmit(handleSignIn)}
+          />
         </Center>
 
         <Center mt={24}>

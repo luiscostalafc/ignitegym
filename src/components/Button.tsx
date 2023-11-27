@@ -7,11 +7,18 @@ import {
 type ButtonProps = IIconButtonProps & {
   title: string;
   variant?: "solid" | "outline";
+  isLoading?: boolean;
 };
 
-export function Button({ title, variant = "solid", ...rest }: ButtonProps) {
+export function Button({
+  title,
+  variant = "solid",
+  isLoading,
+  ...rest
+}: ButtonProps) {
   return (
     <NativeBaseButton
+      isLoading={isLoading}
       w="full"
       h={14}
       bg={variant === "outline" ? "transparent" : "green.700"}
