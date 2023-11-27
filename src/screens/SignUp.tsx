@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   VStack,
   Image,
@@ -10,6 +11,7 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useAuth } from "@hooks/useAuth";
 
 import { signUpFormSchema } from "../validations/signUpFormSchema";
 import { FormDataProps } from "../types/SignUp";
@@ -23,8 +25,10 @@ import backgroundImg from "@assets/background.png";
 import LogoSvg from "@assets/logo.svg";
 
 export function SignUp() {
+  const [isLoading, setIsLoading] = useState(false);
   const navigtion = useNavigation();
   const toast = useToast();
+  const { signIn } = useAuth();
   const {
     control,
     handleSubmit,
@@ -39,12 +43,17 @@ export function SignUp() {
 
   const handleSignUp = async ({ name, email, password }: FormDataProps) => {
     try {
-      const { data } = await api.post("/users", {
+      setIsLoading(true);
+      await api.post("/users", {
         name,
         email,
         password,
       });
+
+      await signIn(email, password);
     } catch (error) {
+      setIsLoading(false);
+
       const isAppError = error instanceof AppError;
       const title = isAppError
         ? error.message
@@ -147,6 +156,7 @@ export function SignUp() {
           />
 
           <Button
+            isLoading={isLoading}
             title="Criar e acessar"
             onPress={handleSubmit(handleSignUp)}
           />
