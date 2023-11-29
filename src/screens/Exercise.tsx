@@ -28,6 +28,7 @@ import { Loading } from "@components/Loading";
 
 export function Exercise() {
   const [isLoading, setIsLoading] = useState(true);
+  const [sendingRegister, setSendingRegister] = useState(false);
   const [exercise, setExercise] = useState<ExerciseDTO>({} as ExerciseDTO);
 
   const toast = useToast();
@@ -61,6 +62,36 @@ export function Exercise() {
       setIsLoading(false);
     }
   };
+
+  async function handleExerciseHistoryRegister() {
+    try {
+      setSendingRegister(true);
+
+      await api.post(`/history`, {
+        exercise_id: exerciseId,
+      });
+
+      toast.show({
+        title: "Exercício marcado como realizado!",
+        placement: "top",
+        bgColor: "green.700",
+      });
+
+      navigation.navigate("history");
+    } catch (error) {
+      const isAppError = error instanceof AppError;
+
+      toast.show({
+        title: isAppError
+          ? error.message
+          : "Não foi possível marchar o exercício.",
+        placement: "top",
+        bgColor: "red.500",
+      });
+    } finally {
+      setSendingRegister(false);
+    }
+  }
 
   useEffect(() => {
     if (!exerciseId) return;
@@ -142,7 +173,11 @@ export function Exercise() {
                 </HStack>
               </HStack>
 
-              <Button title="Marcar como realizado" />
+              <Button
+                title="Marcar como realizado"
+                isLoading={sendingRegister}
+                onPress={handleExerciseHistoryRegister}
+              />
             </Box>
           </VStack>
         </ScrollView>
