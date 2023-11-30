@@ -15,8 +15,9 @@ import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 import { useAuth } from "@hooks/useAuth";
-import { profileSchema } from "src/validations/profileUpdateSchema";
+import { profileSchema } from "../validations/profileUpdateSchema";
 import { api } from "@services/api";
+import { AppError } from "@utils/AppError";
 
 import { ScreenHeader } from "@components/ScreenHeaer";
 import { UserPhoto } from "@components/UserPhoto";
@@ -32,12 +33,13 @@ type FormDataProps = {
 };
 
 export function Profile() {
+  const [isLoading, setIsLoading] = useState(false);
   const [photoIsLoading, setPhotoIsLoading] = useState(false);
   const [userPhoto, setUserPhoto] = useState<string | undefined>();
 
   const PHOTO_SIZE = 33;
   const toast = useToast();
-  const { user } = useAuth();
+  const { user, updateUserProfile } = useAuth();
   const {
     control,
     handleSubmit,
@@ -87,7 +89,35 @@ export function Profile() {
     }
   }
 
-  async function handleProfileUpdate(data: FormDataProps) {}
+  async function handleProfileUpdate(data: FormDataProps) {
+    try {
+      setIsLoading(true);
+
+      const userUpdated = user;
+      userUpdated.name = data.name;
+
+      await api.put("/users", data);
+
+      await updateUserProfile(userUpdated);
+
+      toast.show({
+        title: "Perfil atualizado com sucesso",
+        placement: "top",
+        bgColor: "green.700",
+      });
+    } catch (error) {
+      const isAppError = error instanceof AppError;
+      const title = isAppError ? error.message : "Erro ao atualizar perfil";
+
+      toast.show({
+        title,
+        placement: "top",
+        bgColor: "red.500",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  }
 
   return (
     <VStack flex={1}>
@@ -143,12 +173,13 @@ export function Profile() {
 
           <Controller
             control={control}
-            render={({ field: { onChange, onBlur } }) => (
+            render={({ field: { onChange, onBlur, value } }) => (
               <Input
                 placeholder="E-mail"
                 bg="gray.600"
                 onBlur={onBlur}
                 onChangeText={(value) => onChange(value)}
+                value={value}
                 isDisabled
               />
             )}
@@ -213,6 +244,7 @@ export function Profile() {
           />
 
           <Button
+            isLoading={isLoading}
             title="Atualizar"
             mt={4}
             onPress={handleSubmit(handleProfileUpdate)}
